@@ -11,7 +11,7 @@ object Expressions extends App{
 
   println(1 == x) // relational expression
   // relational operators in scala
-  // == != ||
+  // == != || &&
 
   var aVariable = 2 // assignment op.
   aVariable += 3 // increment op. Also -> -= *= /=
