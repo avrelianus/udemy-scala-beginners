@@ -38,4 +38,52 @@ object Recursion extends App{
     2.  IsPrime function tail recursive
     3.  Fibonacci function, tail recursive
    */
+
+  // 1.
+  def concatStringNtimes(times: Int, str: String): String = {
+    def helper(times: Int, accumulator: String): String = {
+      if (times == 1) accumulator
+      else helper(times - 1, str + accumulator)
+    }
+
+    helper(times, str)
+  }
+
+  @tailrec
+  def concatStrinNtimesBetterVersion(aString: String, n: Int, acc: String = ""): String = {
+    if (n<=0) acc
+    else concatStrinNtimesBetterVersion(aString, n-1, aString + acc)
+  }
+
+  println(concatStrinNtimesBetterVersion("Bolja", 3))
+
+  // 2.
+  def isPrimeTail(number: Int): Boolean = {
+    @tailrec
+    def helper(n: Int): Boolean = {
+      if (n <= 2) true
+      else number % n != 0 && helper(n-1)
+    }
+
+    helper(number/2)
+  }
+  println(concatStringNtimes(3, "hello"))
+  println(isPrimeTail(2))
+  println(isPrimeTail(3))
+  println(isPrimeTail(5))
+  println(isPrimeTail(10))
+  println(isPrimeTail(16))
+
+  // 3. Fibonnaci Tail recursive
+  def fibonnaci(n: Int): Int = {
+    def fibTailRec(i: Int, last: Int, nextToLast: Int): Int = {
+      if (i >= n) last
+      else fibTailRec(i + 1, last + nextToLast, last)
+    }
+
+    if (n <= 2) 1
+    else fibTailRec(2, 1, 1)
+  }
+
+  println(fibonnaci(8))
 }
