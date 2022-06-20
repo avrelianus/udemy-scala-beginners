@@ -29,10 +29,10 @@ object Functions extends App {
     54
 
   println(aParameterlessfun())
-  println(aParameterlessfun) // parameterless func can be called without parentheses. Doesnt work in scala 3
+  println(aParameterlessfun) // parameterless func can be called without parentheses. Doesn't work in scala 3
 
   // Return type of recursive func needs to be specified, because compiler cannot figure out the return type
-  // Specify return types of funcs for explicitness
+  // Specify return types of func for explicitness
   def aRepeatedFunc(aString: String, n: Int): String = {
     if (n==1) aString
     else aString + aRepeatedFunc(aString, n-1) // recursive func

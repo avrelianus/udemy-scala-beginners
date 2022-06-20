@@ -43,16 +43,16 @@ object Expressions extends App{
 
   val aWeirdValue = (aVariable=3) // Unit === void (meaning do not return anything meaningful
   println(aWeirdValue) // value of Unit is ()
-  println("While is a sideeffect expression that returns a Unit.")
+  println("While is a side effect expression that returns a Unit.")
   println(aWhile)
   // Side effects in Scala are expressions returning Unit
-  // Side effects are println(), whiles, reassigning
+  // Side effects are println(), while, reassigning
 
 
   // Code block
   // Code block is an expression. Value of the block it is the last expression
   // Code block can have its own definition of values and variables.
-  // Everything definied inside the code block stays visible within code block
+  // Everything defined inside the code block stays visible within code block
   val aCodeBlock = {
     val y = 2
     val z = y + 1
