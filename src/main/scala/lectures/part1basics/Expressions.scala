@@ -9,7 +9,7 @@ object Expressions extends App{
   // operators in scala
   // + - * / & | << >> >>> (right shift with zero extension)
 
-  println(1 == x) // relational expression
+  println(1 == x) // Relational expression
   // relational operators in scala
   // == != || &&
 

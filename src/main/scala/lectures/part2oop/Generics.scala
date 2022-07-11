@@ -73,5 +73,17 @@ object Generics extends App {
   val newCage = new Cage(new Car) // this will fail
   */
 
+  /*
+    1. Generic trait MyPredicate test[-T] => Boolean
+    2. Generic trait MyTransformer[-A, B] with method transform(A) => B
+    3. MyList
+      - map(transformer) => MyList
+      - filter(predicate) = MyList
+      - flatMap(transformer from A to MyList[B]) => MyList[B]
+
+    class EvenPredicate with MyPredicate[Int]
+    class StringToIntTransformer with MyTransformer[String, Int]
+   */
+
 
 }

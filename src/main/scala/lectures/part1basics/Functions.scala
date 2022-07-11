@@ -52,7 +52,7 @@ object Functions extends App {
 
   /*
   TASKS
-  1. Agreeting func. (name, age) => "Hi, my name is $name, and I am $age years old"
+  1. A greeting func. (name, age) => "Hi, my name is $name, and I am $age years old"
   2. Factorial func. 1 * 2 * 3 .. n
   3. A fibonnaci func
   4. Func. which tests if number is prime
@@ -64,7 +64,7 @@ object Functions extends App {
 
   aGreetingFunc("Stipo", 15)
 
-  // 2. factorial
+  // 2. Factorial
   def fact(n: Int): Int = {
     if(n==0) 1
     else n * fact(n-1)
