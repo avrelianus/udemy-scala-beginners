@@ -19,6 +19,10 @@ abstract class MyList[+A] {
   def flatMap[B](transformer: Function1[A, MyList[B]]): MyList[B]
   def filter(predicate: A => Boolean) : MyList[A]
 
+  def foreach(f: A => Unit) : Unit
+  def sort(compare: (A,A) => Int) : MyList[A]
+  def zipWith[B, C](list: MyList[B], zip:(A, B) => C): MyList[C]
+  def fold[B](start: B)(operator: (B, A) => B): B
   // concatenation
   def ++[B >: A](list: MyList[B]) : MyList[B]
 }
@@ -34,6 +38,13 @@ object Empty extends MyList[Nothing] {
   def map[B](transformer: Nothing => B): MyList[B] = Empty
   def flatMap[B](transformer: Nothing => MyList[B]): MyList[B] = Empty
   def filter(predicate: Nothing => Boolean) : MyList[Nothing] = Empty
+
+  def foreach(f: Nothing => Unit): Unit = ()
+  def sort(compare: (Nothing, Nothing) => Int): MyList[Nothing] = Empty
+  def zipWith[B, C](list: MyList[B], zip: (Nothing, B) => C): MyList[C] =
+    if (!list.isEmpty) throw new RuntimeException("Lists do not have the same length")
+    else Empty
+  def fold[B](start: B)(operator: (B, Nothing) => B): B = start
 
   def ++[B >: Nothing](list: MyList[B]) : MyList[B] = list
 }
@@ -63,6 +74,36 @@ class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
 
   def flatMap[B](transformer: A => MyList[B]): MyList[B] =
     transformer(h) ++ t.flatMap(transformer)
+
+  def foreach(f: A => Unit) : Unit  = {
+    f(h)
+    t.foreach(f)
+  }
+
+  def sort(compare: (A, A) => Int): MyList[A] = {
+    def insert(x: A, sortedList: MyList[A]): MyList[A] =
+      if (sortedList.isEmpty) new Cons(x, Empty)
+      else if (compare(x, sortedList.head) <= 0) new Cons(x, sortedList)
+      else new Cons(sortedList.head, insert(x, sortedList.tail))
+
+    val sortedTail = t.sort(compare)
+    insert(h, sortedTail)
+  }
+
+
+  def zipWith[B, C](list: MyList[B], zip: (A, B) => C): MyList[C] =
+    if (list.isEmpty) throw new RuntimeException("Lists do not have the same length")
+    else new Cons(zip(h, list.head), t.zipWith(list.tail, zip))
+
+  /*
+    [1,2,3].fold(0)(+) =
+    = [2,3].fold(1)(+) =
+    = [3].fold(3)(+) =
+    = [].fold(6)(+)
+    = 6
+   */
+  def fold[B](start: B)(operator: (B, A) => B): B =
+    t.fold(operator(start, h))(operator)
 }
 
 
@@ -76,23 +117,22 @@ object ListTest extends App {
 
   val listOfInts: MyList[Int] = new Cons[Int](2, new Cons[Int](4, new Cons[Int](6, Empty)))
   val aNewListOfInts = new Cons(1, new Cons(4, new Cons(9, Empty)))
-  val listOfStrings: MyList[String] = new Cons[String]("hello", new Cons[String]("world!", Empty))
+  val listOfStrings: MyList[String] = new Cons[String]("hello", new Cons[String]("world!", new Cons[String]("nah!", Empty)))
 
   println(listOfInts)
   println(listOfStrings)
 
-  println(listOfInts.map(new Function1[Int,Int] {
-    override def apply(value: Int): Int = value * 2
-  }).toString)
+  println(listOfInts.map(value => value * 2).toString)
 
-  println(list.filter(new Function1[Int, Boolean] {
-    override def apply(value: Int): Boolean = value % 2 == 0
-  }).toString)
+  println(list.filter((value: Int) => value % 2 == 0).toString)
 
   println((list ++ aNewListOfInts).toString)
-  println(list.flatMap(new Function1[Int, MyList[Int]] {
-    override def apply(value: Int): MyList[Int] = new Cons(value, new Cons[Int](value + 1, Empty))
-  }))
+  println(list.flatMap((value: Int) => new Cons(value, new Cons[Int](value + 1, Empty))))
+
+  listOfInts.foreach(println)
+  println(listOfInts.sort((x,y) => y - x))
+  println(listOfInts.zipWith[String, String](listOfStrings, _ + "-" + _))
+  println(listOfInts.fold(0)(_ + _))
 }
 
 
