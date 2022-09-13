@@ -1,6 +1,6 @@
 package lectures.part2oop
 
-object Enums {
+object Enums extends App {
   /*
   TODO: check Scala 2 Enums
   Only Scala 3
@@ -15,4 +15,17 @@ object Enums {
 
   val somePermission: Permissions = Permission.READ
    */
+
+  object Day extends Enumeration {
+    type Day = Value
+    val MON, TUE, WED, THU, FRI, SAT, SUN = Value
+  }
+
+  println(Day.values)
+
+  Day.values foreach println
+
+
+  val aStringLower = "hello"
+  val aStringUpper = "DowN"
 }
